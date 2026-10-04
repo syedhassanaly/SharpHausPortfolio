@@ -1,0 +1,4 @@
+[build]
+  base = "SharpHaus-Creative-NextJS-NodeJS-Firebase/sharphaus/frontend"
+  command = "npm install && npm run build"
+  publish = ".next"
