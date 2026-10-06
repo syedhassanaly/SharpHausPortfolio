@@ -2,3 +2,6 @@
   base = "SharpHaus-Creative-NextJS-NodeJS-Firebase/sharphaus/frontend"
   command = "npm run build"
   publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
