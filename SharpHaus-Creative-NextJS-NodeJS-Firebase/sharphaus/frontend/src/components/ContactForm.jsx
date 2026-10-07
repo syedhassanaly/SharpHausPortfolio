@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { sendContactMessage } from "@/lib/api";
 
-const initialState = { name: "", email: "", message: "" };
+const initialState = { name: "", email: "", message: "", "bot-field": "" };
 
 export default function ContactForm() {
   const [form, setForm] = useState(initialState);
@@ -30,9 +30,27 @@ export default function ContactForm() {
 
   return (
     <form
+      name="contact"
+      method="POST"
+      action="/__forms.html"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
       onSubmit={onSubmit}
       className="bg-ink-800 p-6 sm:p-10 rounded-3xl border-2 border-brand-500/30 shadow-2xl"
     >
+      <input type="hidden" name="form-name" value="contact" />
+      <p hidden>
+        <label>
+          Leave this field empty:
+          <input
+            name="bot-field"
+            value={form["bot-field"]}
+            onChange={onChange}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8 mb-5 sm:mb-8">
         <div>
           <label htmlFor="name" className="sr-only">
@@ -47,6 +65,7 @@ export default function ContactForm() {
             placeholder="Your Name"
             required
             minLength={2}
+            maxLength={100}
             className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all"
           />
         </div>
@@ -58,6 +77,7 @@ export default function ContactForm() {
             id="email"
             type="email"
             name="email"
+            maxLength={150}
             value={form.email}
             onChange={onChange}
             placeholder="Your Email"
@@ -79,6 +99,7 @@ export default function ContactForm() {
         placeholder="Tell us about your project..."
         required
         minLength={10}
+        maxLength={5000}
         className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all mb-5 sm:mb-8 resize-none"
       />
 
@@ -92,13 +113,13 @@ export default function ContactForm() {
       </button>
 
       {status === "success" && (
-        <p className="mt-4 flex items-center gap-2 text-emerald-400 text-sm sm:text-base">
+        <p role="status" className="mt-4 flex items-center gap-2 text-emerald-400 text-sm sm:text-base">
           <CheckCircle2 size={18} /> Message sent successfully — we'll be in
           touch soon!
         </p>
       )}
       {status === "error" && (
-        <p className="mt-4 flex items-center gap-2 text-red-400 text-sm sm:text-base">
+        <p role="alert" className="mt-4 flex items-center gap-2 text-red-400 text-sm sm:text-base">
           <AlertCircle size={18} /> {errorMsg}
         </p>
       )}

@@ -1,17 +1,24 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-export async function sendContactMessage({ name, email, message }) {
-  const res = await fetch(`${API_URL}/api/contact`, {
+export async function sendContactMessage({
+  name,
+  email,
+  message,
+  "bot-field": botField = "",
+}) {
+  const res = await fetch("/__forms.html", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, message }),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      "form-name": "contact",
+      name: name.trim(),
+      email: email.trim(),
+      message: message.trim(),
+      "bot-field": botField,
+    }).toString(),
   });
 
-  const data = await res.json().catch(() => ({}));
-
   if (!res.ok) {
-    throw new Error(data?.error || "Something went wrong. Please try again.");
+    throw new Error(
+      "Your message could not be sent. Please try again or email us directly."
+    );
   }
-
-  return data;
 }
