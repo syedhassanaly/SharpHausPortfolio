@@ -293,7 +293,7 @@ export const siteConfig = {
   tagline: "CREATIVE AGENCY",
   description:
     "Premium graphic design & web development services crafted for businesses, gamers, and creators.",
-  email: "syedhassanali2327@gmail.com",
+  email: "syedhassan2327@gmail.com",
   phone: "0313-2507953",
   location: "Karachi , Pakistan",
   logo: "/images/blogo.png",
