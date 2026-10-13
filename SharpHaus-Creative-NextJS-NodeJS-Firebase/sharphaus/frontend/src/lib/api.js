@@ -2,23 +2,37 @@ export async function sendContactMessage({
   name,
   email,
   message,
-  "bot-field": botField = "",
 }) {
-  const res = await fetch("/__forms.html", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      "form-name": "contact",
-      name: name.trim(),
-      email: email.trim(),
-      message: message.trim(),
-      "bot-field": botField,
-    }).toString(),
-  });
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  if (!res.ok) {
+  if (!apiUrl) {
+    throw new Error("Contact API URL is not configured.");
+  }
+
+  const response = await fetch(
+    `${apiUrl.replace(/\/+$/, "")}/api/contact`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name.trim(),
+        email: email.trim(),
+        message: message.trim(),
+      }),
+    }
+  );
+
+  const result = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
     throw new Error(
-      "Your message could not be sent. Please try again or email us directly."
+      result.message ||
+        result.error ||
+        "Your message could not be sent. Please try again."
     );
   }
+
+  return result;
 }
