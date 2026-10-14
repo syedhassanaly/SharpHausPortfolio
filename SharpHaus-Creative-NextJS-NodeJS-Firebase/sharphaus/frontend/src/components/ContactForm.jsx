@@ -30,15 +30,9 @@ export default function ContactForm() {
 
   return (
     <form
-      name="contact"
-      method="POST"
-      action="/__forms.html"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
       onSubmit={onSubmit}
       className="bg-ink-800 p-6 sm:p-10 rounded-3xl border-2 border-brand-500/30 shadow-2xl"
     >
-      <input type="hidden" name="form-name" value="contact" />
       <p hidden>
         <label>
           Leave this field empty:
