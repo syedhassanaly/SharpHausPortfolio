@@ -11,8 +11,7 @@ export default function ContactForm() {
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const [errorMsg, setErrorMsg] = useState("");
 
-  const onChange = (e) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const onChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +31,7 @@ export default function ContactForm() {
     <form
       onSubmit={onSubmit}
       className="bg-ink-800 p-6 sm:p-10 rounded-3xl border-2 border-brand-500/30 shadow-2xl"
+      aria-label="Contact form"
     >
       <p hidden>
         <label>
@@ -45,6 +45,7 @@ export default function ContactForm() {
           />
         </label>
       </p>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8 mb-5 sm:mb-8">
         <div>
           <label htmlFor="name" className="sr-only">
@@ -60,9 +61,12 @@ export default function ContactForm() {
             required
             minLength={2}
             maxLength={100}
+            autoComplete="name"
+            aria-required="true"
             className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all"
           />
         </div>
+
         <div>
           <label htmlFor="email" className="sr-only">
             Your Email
@@ -76,6 +80,8 @@ export default function ContactForm() {
             onChange={onChange}
             placeholder="Your Email"
             required
+            autoComplete="email"
+            aria-required="true"
             className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all"
           />
         </div>
@@ -94,13 +100,15 @@ export default function ContactForm() {
         required
         minLength={10}
         maxLength={5000}
-        className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all mb-5 sm:mb-8 resize-none"
+        autoComplete="off"
+        aria-required="true"
+        className="w-full px-5 sm:px-6 py-4 bg-ink-900 border-2 border-brand-500/30 rounded-xl text-white placeholder:text-slate-500 focus:border-brand-500 focus:outline-none transition-all mb-5"
       />
 
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full px-8 py-4 sm:py-5 bg-gradient-to-r from-brand-500 to-brand-600 text-ink-900 rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full px-8 py-4 sm:py-5 bg-gradient-to-r from-brand-500 to-brand-600 text-ink-900 rounded-xl font-bold text-base sm:text-lg hover:shadow-2xl hover:scale-[1.02] active:scale-95"
       >
         {status === "loading" && <Loader2 size={20} className="animate-spin" />}
         {status === "loading" ? "Sending..." : "Send Message"}
@@ -108,10 +116,10 @@ export default function ContactForm() {
 
       {status === "success" && (
         <p role="status" className="mt-4 flex items-center gap-2 text-emerald-400 text-sm sm:text-base">
-          <CheckCircle2 size={18} /> Message sent successfully — we'll be in
-          touch soon!
+          <CheckCircle2 size={18} /> Message sent successfully — we'll be in touch soon!
         </p>
       )}
+
       {status === "error" && (
         <p role="alert" className="mt-4 flex items-center gap-2 text-red-400 text-sm sm:text-base">
           <AlertCircle size={18} /> {errorMsg}
